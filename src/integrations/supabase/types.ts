@@ -14,7 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      members: {
+        Row: {
+          display_name: string
+          id: string
+          is_owner: boolean
+          joined_at: string
+          last_seen: string
+          removed: boolean
+          room_id: string
+          token_hash: string
+        }
+        Insert: {
+          display_name: string
+          id?: string
+          is_owner?: boolean
+          joined_at?: string
+          last_seen?: string
+          removed?: boolean
+          room_id: string
+          token_hash: string
+        }
+        Update: {
+          display_name?: string
+          id?: string
+          is_owner?: boolean
+          joined_at?: string
+          last_seen?: string
+          removed?: boolean
+          room_id?: string
+          token_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "members_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          author_name: string
+          body: string
+          created_at: string
+          deleted_at: string | null
+          edited_at: string | null
+          id: string
+          kind: string
+          member_id: string | null
+          reactions: Json
+          reply_to: string | null
+          room_id: string
+        }
+        Insert: {
+          author_name?: string
+          body: string
+          created_at?: string
+          deleted_at?: string | null
+          edited_at?: string | null
+          id?: string
+          kind?: string
+          member_id?: string | null
+          reactions?: Json
+          reply_to?: string | null
+          room_id: string
+        }
+        Update: {
+          author_name?: string
+          body?: string
+          created_at?: string
+          deleted_at?: string | null
+          edited_at?: string | null
+          id?: string
+          kind?: string
+          member_id?: string | null
+          reactions?: Json
+          reply_to?: string | null
+          room_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_reply_to_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rooms: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          owner_member_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          owner_member_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          owner_member_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
