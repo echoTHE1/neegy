@@ -118,7 +118,7 @@ async function recentMessages(roomId: string, before?: string): Promise<MessageD
 export async function createRoom(input: {
   displayName: string;
   roomName: string;
-  description?: string;
+  description?: string | undefined;
 }): Promise<
   Result<{ room: RoomDTO; member: MemberDTO; token: string; members: MemberDTO[] }>
 > {
@@ -240,7 +240,7 @@ export async function sendMessage(input: {
   roomId: string;
   token: string;
   body: string;
-  replyTo?: string | null;
+  replyTo?: string | null | undefined;
 }): Promise<Result<{ message: MessageDTO }>> {
   const auth = await authenticate(input.roomId, input.token);
   if (isFail(auth)) return auth;
@@ -426,7 +426,7 @@ export async function updateRoom(input: {
   roomId: string;
   token: string;
   name: string;
-  description?: string;
+  description?: string | undefined;
 }): Promise<Result<{ room: RoomDTO }>> {
   const auth = await requireOwner(input.roomId, input.token);
   if (isFail(auth)) return auth;
