@@ -20,6 +20,7 @@ import { MessageBubble, SystemMessage } from "@/components/nexus/MessageBubble";
 import { MessageComposer } from "@/components/nexus/MessageComposer";
 import { Modal } from "@/components/nexus/Modal";
 import { NexusLockup } from "@/components/nexus/NexusLogo";
+import { TypingIndicator } from "@/components/nexus/TypingIndicator";
 import {
   Button,
   Field,
@@ -196,7 +197,7 @@ function Room({ session }: { session: SessionDTO }) {
   const leaveRoom = async () => {
     await actions.leave();
     clearSession();
-    notifyExit();
+    
     void navigate({ to: "/" });
   };
 
@@ -315,7 +316,7 @@ function Room({ session }: { session: SessionDTO }) {
           )}
 
           <div className="px-4">
-            <TypingRow names={typingNames} />
+            <TypingIndicator names={typingNames} />
           </div>
 
           <MessageComposer
