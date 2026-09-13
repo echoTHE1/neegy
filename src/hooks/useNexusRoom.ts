@@ -171,6 +171,8 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
         if (state === "SUBSCRIBED") {
           setConnection("connected");
           void channel.track({ online_at: new Date().toISOString() });
+          // Tell everyone already in the room to pull the new roster / history.
+          void channel.send({ type: "broadcast", event: "history", payload: {} });
         } else if (state === "CHANNEL_ERROR" || state === "TIMED_OUT") {
           setConnection("reconnecting");
         } else if (state === "CLOSED") {
