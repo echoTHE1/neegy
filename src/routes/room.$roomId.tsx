@@ -454,25 +454,6 @@ function Room({ session }: { session: SessionDTO }) {
   }
 }
 
-function TypingRow({ names }: { names: string[] }) {
-  const Lazy = require_typing();
-  return <Lazy names={names} />;
-}
-
-function require_typing() {
-  return TypingIndicatorProxy;
-}
-
-function TypingIndicatorProxy({ names }: { names: string[] }) {
-  const { TypingIndicator } = TypingModule;
-  return <TypingIndicator names={names} />;
-}
-
-import * as TypingModule from "@/components/nexus/TypingIndicator";
-
-function notifyExit() {
-  /* session cleared; landing page handles messaging */
-}
 
 function SettingsModal({
   open,
