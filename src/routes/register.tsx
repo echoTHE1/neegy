@@ -12,8 +12,8 @@ export const Route = createFileRoute("/register")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Create Account — NEXUS" },
-      { name: "description", content: "Join NEXUS" },
+      { title: "Create Account — NEEGY" },
+      { name: "description", content: "Join NEEGY" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -82,7 +82,7 @@ function RegisterPage() {
           <h1 className="font-display text-xl font-bold tracking-[0.12em] uppercase mb-2">
             Create Account
           </h1>
-          <p className="text-sm text-muted-foreground">Join NEXUS and start connecting</p>
+          <p className="text-sm text-muted-foreground">Join NEEGY and start connecting</p>
         </div>
 
         <div className="space-y-4">

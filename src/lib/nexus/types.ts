@@ -54,11 +54,11 @@ export type NexusErrorCode =
 export const ERROR_COPY: Record<NexusErrorCode, { title: string; detail: string }> = {
   ROOM_NOT_FOUND: {
     title: "ROOM NOT FOUND",
-    detail: "That NEXUS code doesn't match an active room.",
+    detail: "That NEEGY code doesn't match an active room.",
   },
-  ROOM_CLOSED: { title: "ROOM CLOSED", detail: "This NEXUS room is no longer available." },
+  ROOM_CLOSED: { title: "ROOM CLOSED", detail: "This NEEGY room is no longer available." },
   NOT_A_MEMBER: { title: "ACCESS DENIED", detail: "You're not a member of this room anymore." },
-  REMOVED: { title: "REMOVED FROM ROOM", detail: "The room owner removed you from this NEXUS." },
+  REMOVED: { title: "REMOVED FROM ROOM", detail: "The room owner removed you from this NEEGY." },
   FORBIDDEN: { title: "NOT ALLOWED", detail: "Only the room owner can do that." },
   RATE_LIMITED: { title: "SLOW DOWN", detail: "You're sending messages too quickly." },
   INVALID_INPUT: { title: "CHECK YOUR DETAILS", detail: "Some of the information isn't valid." },

@@ -90,7 +90,7 @@ export function MessageBubble({
             className={cn(
               "min-w-0 rounded-2xl border px-3.5 py-2.5 text-sm break-words whitespace-pre-wrap",
               isMine
-                ? "border-primary/25 bg-[linear-gradient(135deg,oklch(0.83_0.15_200/0.14),oklch(0.66_0.21_295/0.14))]"
+                ? "border-primary/25 bg-[linear-gradient(135deg,oklch(0.78_0.16_82/0.14),oklch(0.67_0.14_65/0.14))]"
                 : "border-border bg-surface",
               deleted && "italic text-muted-foreground",
             )}

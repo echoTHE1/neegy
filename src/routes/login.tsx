@@ -12,8 +12,8 @@ export const Route = createFileRoute("/login")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Log In — NEXUS" },
-      { name: "description", content: "Access your NEXUS account" },
+      { title: "Log In — NEEGY" },
+      { name: "description", content: "Access your NEEGY account" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -63,7 +63,7 @@ function LoginPage() {
           <h1 className="font-display text-xl font-bold tracking-[0.12em] uppercase mb-2">
             Welcome Back
           </h1>
-          <p className="text-sm text-muted-foreground">Enter your credentials to access NEXUS</p>
+          <p className="text-sm text-muted-foreground">Enter your credentials to access NEEGY</p>
         </div>
 
         <div className="space-y-4">

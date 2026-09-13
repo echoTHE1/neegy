@@ -18,9 +18,9 @@ const buttonStyles = cva(
     variants: {
       variant: {
         primary:
-          "font-display text-xs uppercase tracking-[0.18em] text-primary-foreground bg-[linear-gradient(100deg,var(--primary),oklch(0.7_0.18_255),var(--violet))] shadow-[0_8px_30px_-12px_oklch(0.7_0.18_255/0.9)] hover:shadow-[0_10px_40px_-10px_oklch(0.7_0.18_255/1)] hover:-translate-y-0.5",
+          "font-display text-xs uppercase tracking-[0.18em] text-primary-foreground bg-[linear-gradient(100deg,var(--primary),var(--accent),var(--violet))] shadow-[0_8px_30px_-12px_var(--primary-glow)] hover:shadow-[0_10px_40px_-10px_var(--primary-glow)] hover:-translate-y-0.5",
         outline:
-          "font-display text-xs uppercase tracking-[0.18em] glass text-foreground hover:border-primary/50 hover:bg-surface-hover hover:-translate-y-0.5 hover:shadow-[0_0_28px_-10px_oklch(0.83_0.15_200/0.8)]",
+          "font-display text-xs uppercase tracking-[0.18em] glass text-foreground hover:border-primary/50 hover:bg-surface-hover hover:-translate-y-0.5 hover:shadow-[0_0_28px_-10px_var(--primary-glow)]",
         ghost: "text-muted-foreground hover:bg-surface-hover hover:text-foreground",
         danger:
           "font-display text-xs uppercase tracking-[0.18em] border border-destructive/40 bg-destructive/12 text-destructive hover:bg-destructive/20",
@@ -72,7 +72,7 @@ export function GlassCard({
   return (
     <div
       className={cn(
-        "glass relative rounded-2xl shadow-[var(--shadow-panel)] before:pointer-events-none before:absolute before:inset-x-8 before:-top-px before:h-px before:bg-[linear-gradient(90deg,transparent,oklch(0.83_0.15_200/0.6),transparent)]",
+        "glass relative rounded-2xl shadow-[var(--shadow-panel)] before:pointer-events-none before:absolute before:inset-x-8 before:-top-px before:h-px before:bg-[linear-gradient(90deg,transparent,var(--primary-glow),transparent)]",
         className,
       )}
       {...rest}
@@ -85,7 +85,7 @@ export function GlassCard({
 /* -------------------------------------------------------------- TextFields */
 
 const fieldBase =
-  "w-full rounded-xl border border-border bg-input px-4 text-sm text-foreground placeholder:text-muted-foreground/70 shadow-[inset_0_1px_0_oklch(1_0_0/0.05)] transition-all duration-200 outline-none focus:border-primary/60 focus:bg-surface-hover focus:shadow-[0_0_0_3px_oklch(0.83_0.15_200/0.12),inset_0_1px_0_oklch(1_0_0/0.06)]";
+  "w-full rounded-xl border border-border bg-input px-4 text-sm text-foreground placeholder:text-muted-foreground/70 shadow-[inset_0_1px_0_oklch(1_0_0/0.05)] transition-all duration-200 outline-none focus:border-primary/60 focus:bg-surface-hover focus:shadow-[0_0_0_3px_oklch(0.78_0.16_82/0.12),inset_0_1px_0_oklch(1_0_0/0.06)]";
 
 type FieldWrapProps = {
   label: string;

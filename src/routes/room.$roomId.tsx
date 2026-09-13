@@ -40,10 +40,10 @@ export const Route = createFileRoute("/room/$roomId")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Room — NEXUS" },
-      { name: "description", content: "Your private real-time NEXUS group chat room." },
+      { title: "Room — NEEGY" },
+      { name: "description", content: "Your private real-time NEEGY group chat room." },
       { name: "robots", content: "noindex" },
-      { property: "og:title", content: "NEXUS Room" },
+      { property: "og:title", content: "NEEGY Room" },
       { property: "og:description", content: "A private, invite-only real-time group chat." },
     ],
   }),
@@ -207,7 +207,7 @@ function Room({ session }: { session: SessionDTO }) {
 
       {/* Header */}
       <header className="relative z-20 flex items-center gap-3 border-b border-border bg-background/70 px-3 py-2.5 backdrop-blur-xl sm:px-4">
-        <Link to="/" aria-label="NEXUS home" className="hidden sm:block">
+        <Link to="/" aria-label="NEEGY home" className="hidden sm:block">
           <NexusLockup className="scale-90" />
         </Link>
         <div className="min-w-0 flex-1 sm:border-l sm:border-border sm:pl-3">

@@ -14,13 +14,13 @@ import { ERROR_COPY } from "@/lib/nexus/types";
 export const Route = createFileRoute("/join")({
   head: () => ({
     meta: [
-      { title: "Join a Private Room — NEXUS" },
+      { title: "Join a Private Room — NEEGY" },
       {
         name: "description",
         content:
-          "Enter your NEXUS access code and a display name to join a private, real-time group chat room.",
+          "Enter your NEEGY access code and a display name to join a private, real-time group chat room.",
       },
-      { property: "og:title", content: "Join a Private Room — NEXUS" },
+      { property: "og:title", content: "Join a Private Room — NEEGY" },
       {
         property: "og:description",
         content: "Got an access code? Enter it here to join the room instantly.",
@@ -74,7 +74,7 @@ export function JoinScreen({ presetCode }: { presetCode?: string }) {
     <div className="relative min-h-screen overflow-hidden">
       <BackgroundFX />
       <header className="relative z-10 mx-auto flex w-full max-w-3xl items-center justify-between px-5 py-6">
-        <Link to="/" aria-label="NEXUS home">
+        <Link to="/" aria-label="NEEGY home">
           <NexusLockup />
         </Link>
         <Link

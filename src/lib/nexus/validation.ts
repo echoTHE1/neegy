@@ -57,5 +57,5 @@ export function initialsOf(name: string): string {
 export function hueOf(name: string): number {
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) % 100000;
-  return 180 + (hash % 140); // cyan -> violet band
+  return 38 + (hash % 48); // warm gold -> amber band
 }

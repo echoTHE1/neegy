@@ -43,8 +43,8 @@ export function InviteCode({
     const url = `${window.location.origin}/join/${code}`;
     try {
       await navigator.share({
-        title: `Join ${roomName} on NEXUS`,
-        text: `Join my private NEXUS room with code ${code}`,
+        title: `Join ${roomName} on NEEGY`,
+        text: `Join my private NEEGY room with code ${code}`,
         url,
       });
     } catch {
@@ -56,8 +56,8 @@ export function InviteCode({
     <div className={cn("space-y-4", className)}>
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-primary/25 bg-[linear-gradient(135deg,oklch(0.83_0.15_200/0.1),oklch(0.66_0.21_295/0.12))] px-4 py-6 text-center transition-shadow duration-500",
-          flash && "shadow-[0_0_60px_-12px_oklch(0.83_0.15_200/0.9)]",
+          "relative overflow-hidden rounded-2xl border border-primary/25 bg-[linear-gradient(135deg,oklch(0.78_0.16_82/0.1),oklch(0.67_0.14_65/0.12))] px-4 py-6 text-center transition-shadow duration-500",
+          flash && "shadow-[0_0_60px_-12px_oklch(0.78_0.16_82/0.9)]",
         )}
       >
         <p className="hud-label">Access code</p>

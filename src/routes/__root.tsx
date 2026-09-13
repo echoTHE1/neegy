@@ -78,7 +78,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "NEXUS — Private Real-Time Group Chat" },
+      { title: "NEEGY — Private Real-Time Group Chat" },
       {
         name: "description",
         content:

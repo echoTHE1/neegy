@@ -15,13 +15,13 @@ import { ERROR_COPY, type RoomDTO } from "@/lib/nexus/types";
 export const Route = createFileRoute("/create")({
   head: () => ({
     meta: [
-      { title: "Create a Private Room — NEXUS" },
+      { title: "Create a Private Room — NEEGY" },
       {
         name: "description",
         content:
-          "Name your room, pick a display name, and get a unique access code for your private NEXUS group chat.",
+          "Name your room, pick a display name, and get a unique access code for your private NEEGY group chat.",
       },
-      { property: "og:title", content: "Create a Private Room — NEXUS" },
+      { property: "og:title", content: "Create a Private Room — NEEGY" },
       {
         property: "og:description",
         content: "Spin up an invite-only real-time group chat in seconds.",
@@ -82,7 +82,7 @@ function CreatePage() {
     <div className="relative min-h-screen overflow-hidden">
       <BackgroundFX />
       <header className="relative z-10 mx-auto flex w-full max-w-3xl items-center justify-between px-5 py-6">
-        <Link to="/" aria-label="NEXUS home">
+        <Link to="/" aria-label="NEEGY home">
           <NexusLockup />
         </Link>
         <Link

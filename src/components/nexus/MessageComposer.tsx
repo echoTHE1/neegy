@@ -121,7 +121,7 @@ export function MessageComposer({
                 void submit();
               }
             }}
-            className="max-h-40 w-full resize-none rounded-xl border border-border bg-input px-4 py-3 pr-14 text-sm shadow-[inset_0_1px_0_oklch(1_0_0/0.05)] outline-none transition-all placeholder:text-muted-foreground/70 focus:border-primary/60 focus:bg-surface-hover focus:shadow-[0_0_0_3px_oklch(0.83_0.15_200/0.12)] disabled:opacity-50 scrollbar-thin"
+            className="max-h-40 w-full resize-none rounded-xl border border-border bg-input px-4 py-3 pr-14 text-sm shadow-[inset_0_1px_0_oklch(1_0_0/0.05)] outline-none transition-all placeholder:text-muted-foreground/70 focus:border-primary/60 focus:bg-surface-hover focus:shadow-[0_0_0_3px_oklch(0.78_0.16_82/0.12)] disabled:opacity-50 scrollbar-thin"
           />
           {remaining < 200 && (
             <span

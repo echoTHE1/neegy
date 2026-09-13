@@ -5,7 +5,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 type Particle = { x: number; y: number; vx: number; vy: number; r: number };
 
 /**
- * Ambient NEXUS backdrop: drifting gradient blobs, a slow grid, and a
+ * Ambient NEEGY backdrop: drifting gradient blobs, a slow grid, and a
  * lightweight particle field with proximity links. Purely decorative.
  */
 export function BackgroundFX({ dense = true }: { dense?: boolean }) {
@@ -54,7 +54,7 @@ export function BackgroundFX({ dense = true }: { dense?: boolean }) {
         if (p.y > h) p.y = 0;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(140, 225, 255, 0.35)";
+        ctx.fillStyle = "rgba(238, 190, 64, 0.38)";
         ctx.fill();
       }
 
@@ -69,7 +69,7 @@ export function BackgroundFX({ dense = true }: { dense?: boolean }) {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(120, 170, 255, ${0.09 * (1 - dist2 / 18000)})`;
+            ctx.strokeStyle = `rgba(214, 169, 41, ${0.11 * (1 - dist2 / 18000)})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }

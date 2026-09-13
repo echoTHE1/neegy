@@ -11,13 +11,13 @@ import type { SessionDTO } from "@/lib/nexus/types";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NEXUS — Private Real-Time Group Chat Rooms" },
+      { title: "NEEGY — Private Real-Time Group Chat Rooms" },
       {
         name: "description",
         content:
           "Create an encrypted-feeling private group chat in seconds. Share one access code — only people with it can join. No accounts, no discovery, real-time messaging.",
       },
-      { property: "og:title", content: "NEXUS — Private Real-Time Group Chat Rooms" },
+      { property: "og:title", content: "NEEGY — Private Real-Time Group Chat Rooms" },
       {
         property: "og:description",
         content:
@@ -169,7 +169,7 @@ function Landing() {
 
       <footer className="relative z-10 border-t border-border/60 px-5 py-6 text-center">
         <p className="font-mono text-[11px] text-muted-foreground">
-          NEXUS · private group channels · no tracking, no discovery
+          NEEGY · private group channels · no tracking, no discovery
         </p>
       </footer>
     </div>

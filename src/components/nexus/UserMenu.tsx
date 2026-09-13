@@ -83,7 +83,7 @@ export function UserMenu({ user, onLogout, onUpdateProfile }: UserMenuProps) {
         onOpenChange={setShowSettings}
         eyebrow="Account"
         title="Settings"
-        description="Manage your NEXUS profile"
+        description="Manage your NEEGY profile"
       >
         <div className="space-y-4">
           <div>

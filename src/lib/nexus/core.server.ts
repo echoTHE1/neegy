@@ -155,7 +155,7 @@ export async function createRoom(input: {
   if (memberError || !member) return fail("SERVER_ERROR");
 
   await db.from("rooms").update({ owner_member_id: member['id'] }).eq("id", room['id']);
-  await systemMessage(room['id'] as string, `${displayName} created this NEXUS`);
+  await systemMessage(room['id'] as string, `${displayName} created this NEEGY`);
 
   return {
     ok: true,
