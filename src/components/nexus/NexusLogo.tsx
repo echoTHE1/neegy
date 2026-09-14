@@ -25,10 +25,7 @@ export function NexusMark({ className, glow = true }: { className?: string; glow
 export function NexusWordmark({ className }: { className?: string }) {
   return (
     <span
-      className={cn(
-        "text-gradient font-display font-black tracking-[0.28em] uppercase",
-        className,
-      )}
+      className={cn("text-gradient font-display font-black tracking-[0.28em] uppercase", className)}
     >
       Neegy
     </span>

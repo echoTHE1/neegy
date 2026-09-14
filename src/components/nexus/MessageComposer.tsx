@@ -21,12 +21,20 @@ export function MessageComposer({
   replyTo: MessageDTO | null;
   onCancelReply: () => void;
   onSend: (body: string) => Promise<boolean>;
-  onTyping: () => void;
+  onTyping: (active: boolean) => void;
   disabled?: boolean;
 }) {
   const [value, setValue] = useState("");
   const [sending, setSending] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const typingStopTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (typingStopTimer.current) clearTimeout(typingStopTimer.current);
+      onTyping(false);
+    };
+  }, [onTyping]);
 
   useEffect(() => {
     if (replyTo) textareaRef.current?.focus();
@@ -47,6 +55,8 @@ export function MessageComposer({
     setSending(false);
     if (ok) {
       setValue("");
+      if (typingStopTimer.current) clearTimeout(typingStopTimer.current);
+      onTyping(false);
       onCancelReply();
     }
   };
@@ -112,8 +122,14 @@ export function MessageComposer({
             placeholder={`Message ${roomName}`}
             maxLength={LIMITS.message}
             onChange={(event) => {
-              setValue(event.target.value);
-              onTyping();
+              const nextValue = event.target.value;
+              setValue(nextValue);
+              const active = Boolean(nextValue.trim());
+              onTyping(active);
+              if (typingStopTimer.current) clearTimeout(typingStopTimer.current);
+              if (active) {
+                typingStopTimer.current = setTimeout(() => onTyping(false), 2600);
+              }
             }}
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {

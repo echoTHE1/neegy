@@ -27,36 +27,36 @@ function newToken(): string {
 
 function toRoom(row: Record<string, unknown>): RoomDTO {
   return {
-    id: row['id'] as string,
-    name: row['name'] as string,
-    description: (row['description'] as string) ?? null,
-    code: row['code'] as string,
-    ownerMemberId: (row['owner_member_id'] as string) ?? null,
-    createdAt: row['created_at'] as string,
+    id: row["id"] as string,
+    name: row["name"] as string,
+    description: (row["description"] as string) ?? null,
+    code: row["code"] as string,
+    ownerMemberId: (row["owner_member_id"] as string) ?? null,
+    createdAt: row["created_at"] as string,
   };
 }
 
 function toMember(row: Record<string, unknown>): MemberDTO {
   return {
-    id: row['id'] as string,
-    displayName: row['display_name'] as string,
-    isOwner: Boolean(row['is_owner']),
-    joinedAt: row['joined_at'] as string,
+    id: row["id"] as string,
+    displayName: row["display_name"] as string,
+    isOwner: Boolean(row["is_owner"]),
+    joinedAt: row["joined_at"] as string,
   };
 }
 
 function toMessage(row: Record<string, unknown>): MessageDTO {
   return {
-    id: row['id'] as string,
-    memberId: (row['member_id'] as string) ?? null,
-    authorName: row['author_name'] as string,
-    kind: (row['kind'] as "user" | "system") ?? "user",
-    body: row['deleted_at'] ? "" : (row['body'] as string),
-    replyTo: (row['reply_to'] as string) ?? null,
-    reactions: (row['reactions'] as Record<string, string[]>) ?? {},
-    createdAt: row['created_at'] as string,
-    editedAt: (row['edited_at'] as string) ?? null,
-    deletedAt: (row['deleted_at'] as string) ?? null,
+    id: row["id"] as string,
+    memberId: (row["member_id"] as string) ?? null,
+    authorName: row["author_name"] as string,
+    kind: (row["kind"] as "user" | "system") ?? "user",
+    body: row["deleted_at"] ? "" : (row["body"] as string),
+    replyTo: (row["reply_to"] as string) ?? null,
+    reactions: (row["reactions"] as Record<string, string[]>) ?? {},
+    createdAt: row["created_at"] as string,
+    editedAt: (row["edited_at"] as string) ?? null,
+    deletedAt: (row["deleted_at"] as string) ?? null,
   };
 }
 
@@ -82,10 +82,10 @@ async function authenticate(roomId: string, token: string): Promise<Auth | Fail>
     .maybeSingle();
   if (error) return fail("SERVER_ERROR");
   if (!member) return fail("NOT_A_MEMBER");
-  if (member['removed']) return fail("REMOVED");
+  if (member["removed"]) return fail("REMOVED");
 
   const { data: room } = await db.from("rooms").select("*").eq("id", roomId).maybeSingle();
-  if (!room || !room['active']) return fail("ROOM_CLOSED");
+  if (!room || !room["active"]) return fail("ROOM_CLOSED");
   return { member, room };
 }
 
@@ -119,9 +119,7 @@ export async function createRoom(input: {
   displayName: string;
   roomName: string;
   description?: string | undefined;
-}): Promise<
-  Result<{ room: RoomDTO; member: MemberDTO; token: string; members: MemberDTO[] }>
-> {
+}): Promise<Result<{ room: RoomDTO; member: MemberDTO; token: string; members: MemberDTO[] }>> {
   const displayName = sanitizeText(input.displayName, LIMITS.displayName);
   const roomName = sanitizeText(input.roomName, LIMITS.roomName);
   const description = sanitizeText(input.description ?? "", LIMITS.description) || null;
@@ -145,7 +143,7 @@ export async function createRoom(input: {
   const { data: member, error: memberError } = await db
     .from("members")
     .insert({
-      room_id: room['id'],
+      room_id: room["id"],
       display_name: displayName,
       token_hash: await sha256(token),
       is_owner: true,
@@ -154,12 +152,12 @@ export async function createRoom(input: {
     .single();
   if (memberError || !member) return fail("SERVER_ERROR");
 
-  await db.from("rooms").update({ owner_member_id: member['id'] }).eq("id", room['id']);
-  await systemMessage(room['id'] as string, `${displayName} created this NEEGY`);
+  await db.from("rooms").update({ owner_member_id: member["id"] }).eq("id", room["id"]);
+  await systemMessage(room["id"] as string, `${displayName} created this NEEGY`);
 
   return {
     ok: true,
-    room: { ...toRoom(room), ownerMemberId: member['id'] as string },
+    room: { ...toRoom(room), ownerMemberId: member["id"] as string },
     member: toMember(member),
     token,
     members: [toMember(member)],
@@ -176,13 +174,13 @@ export async function joinRoom(input: {
   if (!code) return fail("ROOM_NOT_FOUND");
 
   const { data: room } = await db.from("rooms").select("*").eq("code", code).maybeSingle();
-  if (!room || !room['active']) return fail("ROOM_NOT_FOUND");
+  if (!room || !room["active"]) return fail("ROOM_NOT_FOUND");
 
   const token = newToken();
   const { data: member, error } = await db
     .from("members")
     .insert({
-      room_id: room['id'],
+      room_id: room["id"],
       display_name: displayName,
       token_hash: await sha256(token),
       is_owner: false,
@@ -191,14 +189,11 @@ export async function joinRoom(input: {
     .single();
   if (error || !member) return fail("SERVER_ERROR");
 
-  await systemMessage(room['id'] as string, `${displayName} joined the room`);
+  await systemMessage(room["id"] as string, `${displayName} joined the room`);
   return { ok: true, room: toRoom(room), member: toMember(member), token };
 }
 
-export async function getRoomState(input: {
-  roomId: string;
-  token: string;
-}): Promise<
+export async function getRoomState(input: { roomId: string; token: string }): Promise<
   Result<{
     room: RoomDTO;
     me: MemberDTO;
@@ -209,7 +204,10 @@ export async function getRoomState(input: {
 > {
   const auth = await authenticate(input.roomId, input.token);
   if (isFail(auth)) return auth;
-  await db.from("members").update({ last_seen: new Date().toISOString() }).eq("id", auth.member['id']);
+  await db
+    .from("members")
+    .update({ last_seen: new Date().toISOString() })
+    .eq("id", auth.member["id"]);
 
   const [members, messages] = await Promise.all([
     roster(input.roomId),
@@ -253,7 +251,7 @@ export async function sendMessage(input: {
   const { count } = await db
     .from("messages")
     .select("id", { count: "exact", head: true })
-    .eq("member_id", auth.member['id'])
+    .eq("member_id", auth.member["id"])
     .gte("created_at", since);
   if ((count ?? 0) >= RATE_MAX) return fail("RATE_LIMITED");
 
@@ -265,15 +263,15 @@ export async function sendMessage(input: {
       .eq("id", input.replyTo)
       .eq("room_id", input.roomId)
       .maybeSingle();
-    replyTo = parent ? (parent['id'] as string) : null;
+    replyTo = parent ? (parent["id"] as string) : null;
   }
 
   const { data, error } = await db
     .from("messages")
     .insert({
       room_id: input.roomId,
-      member_id: auth.member['id'],
-      author_name: auth.member['display_name'],
+      member_id: auth.member["id"],
+      author_name: auth.member["display_name"],
       kind: "user",
       body,
       reply_to: replyTo,
@@ -302,8 +300,8 @@ export async function editMessage(input: {
     .eq("id", input.messageId)
     .eq("room_id", input.roomId)
     .maybeSingle();
-  if (!existing || existing['deleted_at']) return fail("NOT_FOUND");
-  if (existing['member_id'] !== auth.member['id'] || existing['kind'] !== "user")
+  if (!existing || existing["deleted_at"]) return fail("NOT_FOUND");
+  if (existing["member_id"] !== auth.member["id"] || existing["kind"] !== "user")
     return fail("FORBIDDEN");
 
   const { data, error } = await db
@@ -331,8 +329,8 @@ export async function deleteMessage(input: {
     .eq("room_id", input.roomId)
     .maybeSingle();
   if (!existing) return fail("NOT_FOUND");
-  const isOwner = auth.member['is_owner'] === true;
-  if (existing['member_id'] !== auth.member['id'] && !isOwner) return fail("FORBIDDEN");
+  const isOwner = auth.member["is_owner"] === true;
+  if (existing["member_id"] !== auth.member["id"] && !isOwner) return fail("FORBIDDEN");
 
   const { data, error } = await db
     .from("messages")
@@ -359,10 +357,10 @@ export async function toggleReaction(input: {
     .eq("id", input.messageId)
     .eq("room_id", input.roomId)
     .maybeSingle();
-  if (!existing || existing['deleted_at']) return fail("NOT_FOUND");
+  if (!existing || existing["deleted_at"]) return fail("NOT_FOUND");
 
-  const reactions = { ...((existing['reactions'] as Record<string, string[]>) ?? {}) };
-  const memberId = auth.member['id'] as string;
+  const reactions = { ...((existing["reactions"] as Record<string, string[]>) ?? {}) };
+  const memberId = auth.member["id"] as string;
   const current = reactions[input.emoji] ?? [];
   reactions[input.emoji] = current.includes(memberId)
     ? current.filter((id) => id !== memberId)
@@ -385,7 +383,10 @@ export async function pingRoom(input: {
 }): Promise<Result<{ room: RoomDTO; members: MemberDTO[] }>> {
   const auth = await authenticate(input.roomId, input.token);
   if (isFail(auth)) return auth;
-  await db.from("members").update({ last_seen: new Date().toISOString() }).eq("id", auth.member['id']);
+  await db
+    .from("members")
+    .update({ last_seen: new Date().toISOString() })
+    .eq("id", auth.member["id"]);
   return { ok: true, room: toRoom(auth.room), members: await roster(input.roomId) };
 }
 
@@ -396,12 +397,12 @@ export async function leaveRoom(input: {
   const auth = await authenticate(input.roomId, input.token);
   if (isFail(auth)) return { ok: true } as Result<Record<string, never>>;
 
-  const memberId = auth.member['id'] as string;
-  const name = auth.member['display_name'] as string;
+  const memberId = auth.member["id"] as string;
+  const name = auth.member["display_name"] as string;
   await db.from("members").update({ removed: true }).eq("id", memberId);
   await systemMessage(input.roomId, `${name} left the room`);
 
-  if (auth.member['is_owner']) {
+  if (auth.member["is_owner"]) {
     const remaining = await roster(input.roomId);
     const heir = remaining[0];
     if (heir) {
@@ -418,7 +419,7 @@ export async function leaveRoom(input: {
 async function requireOwner(roomId: string, token: string): Promise<Auth | Fail> {
   const auth = await authenticate(roomId, token);
   if (isFail(auth)) return auth;
-  if (!auth.member['is_owner']) return fail("FORBIDDEN");
+  if (!auth.member["is_owner"]) return fail("FORBIDDEN");
   return auth;
 }
 
@@ -476,7 +477,7 @@ export async function removeMember(input: {
 }): Promise<Result<{ members: MemberDTO[] }>> {
   const auth = await requireOwner(input.roomId, input.token);
   if (isFail(auth)) return auth;
-  if (input.memberId === auth.member['id']) return fail("FORBIDDEN");
+  if (input.memberId === auth.member["id"]) return fail("FORBIDDEN");
 
   const { data: target } = await db
     .from("members")
@@ -487,7 +488,7 @@ export async function removeMember(input: {
   if (!target) return fail("NOT_FOUND");
 
   await db.from("members").update({ removed: true }).eq("id", input.memberId);
-  await systemMessage(input.roomId, `${target['display_name']} was removed from the room`);
+  await systemMessage(input.roomId, `${target["display_name"]} was removed from the room`);
   return { ok: true, members: await roster(input.roomId) };
 }
 

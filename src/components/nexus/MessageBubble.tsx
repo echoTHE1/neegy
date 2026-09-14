@@ -97,7 +97,9 @@ export function MessageBubble({
           >
             {replyTarget && !deleted && (
               <div className="mb-2 truncate border-l-2 border-primary/50 pl-2 text-[11px] text-muted-foreground">
-                <span className="font-display tracking-wider uppercase">{replyTarget.authorName}</span>{" "}
+                <span className="font-display tracking-wider uppercase">
+                  {replyTarget.authorName}
+                </span>{" "}
                 {replyTarget.deletedAt ? "message deleted" : replyTarget.body.slice(0, 90)}
               </div>
             )}
@@ -192,7 +194,10 @@ export function MessageBubble({
                     align={isMine ? "end" : "start"}
                     className="animate-scale-in glass z-50 min-w-40 rounded-xl p-1.5 text-sm"
                   >
-                    <MenuItem onSelect={() => onReply(message)} icon={<CornerUpLeft className="h-3.5 w-3.5" />}>
+                    <MenuItem
+                      onSelect={() => onReply(message)}
+                      icon={<CornerUpLeft className="h-3.5 w-3.5" />}
+                    >
                       Reply
                     </MenuItem>
                     <MenuItem onSelect={copy} icon={<Copy className="h-3.5 w-3.5" />}>

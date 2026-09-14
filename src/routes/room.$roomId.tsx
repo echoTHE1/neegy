@@ -80,7 +80,15 @@ function RoomSkeleton() {
   );
 }
 
-function Shell({ title, body, children }: { title: string; body: string; children?: React.ReactNode }) {
+function Shell({
+  title,
+  body,
+  children,
+}: {
+  title: string;
+  body: string;
+  children?: React.ReactNode;
+}) {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-5">
       <BackgroundFX />
@@ -136,9 +144,11 @@ function Room({ session }: { session: SessionDTO }) {
   const [showMembers, setShowMembers] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [confirm, setConfirm] = useState<null | { title: string; body: string; action: () => void }>(
-    null,
-  );
+  const [confirm, setConfirm] = useState<null | {
+    title: string;
+    body: string;
+    action: () => void;
+  }>(null);
   const [atBottom, setAtBottom] = useState(true);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -197,7 +207,7 @@ function Room({ session }: { session: SessionDTO }) {
   const leaveRoom = async () => {
     await actions.leave();
     clearSession();
-    
+
     void navigate({ to: "/" });
   };
 
@@ -320,6 +330,7 @@ function Room({ session }: { session: SessionDTO }) {
           </div>
 
           <MessageComposer
+            key={room.id}
             roomName={room.name}
             replyTo={replyTo}
             onCancelReply={() => setReplyTo(null)}
@@ -455,7 +466,6 @@ function Room({ session }: { session: SessionDTO }) {
   }
 }
 
-
 function SettingsModal({
   open,
   onOpenChange,
@@ -497,7 +507,11 @@ function SettingsModal({
     >
       {amOwner ? (
         <div className="space-y-5">
-          <Field label="Room name" htmlFor="settingsName" counter={`${draftName.length}/${LIMITS.roomName}`}>
+          <Field
+            label="Room name"
+            htmlFor="settingsName"
+            counter={`${draftName.length}/${LIMITS.roomName}`}
+          >
             <TextInput
               id="settingsName"
               value={draftName}

@@ -121,11 +121,12 @@ export const TextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLIn
   },
 );
 
-export const TextArea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(
-  function TextArea({ className, ...rest }, ref) {
-    return <textarea ref={ref} className={cn(fieldBase, "py-3", className)} {...rest} />;
-  },
-);
+export const TextArea = forwardRef<
+  HTMLTextAreaElement,
+  TextareaHTMLAttributes<HTMLTextAreaElement>
+>(function TextArea({ className, ...rest }, ref) {
+  return <textarea ref={ref} className={cn(fieldBase, "py-3", className)} {...rest} />;
+});
 
 /* ------------------------------------------------------------------ Avatar */
 
@@ -142,7 +143,10 @@ export function Avatar({
 }) {
   const hue = hueOf(name);
   return (
-    <span className={cn("relative inline-flex shrink-0", className)} style={{ width: size, height: size }}>
+    <span
+      className={cn("relative inline-flex shrink-0", className)}
+      style={{ width: size, height: size }}
+    >
       <span
         className="flex h-full w-full items-center justify-center rounded-xl font-display text-[0.62em] font-bold tracking-wider text-foreground"
         style={{

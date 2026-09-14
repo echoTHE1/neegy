@@ -62,14 +62,23 @@ function RegisterPage() {
 
   const handleKeyPress = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" && username && displayName && email && password && confirmPassword && !isLoading) {
+      if (
+        e.key === "Enter" &&
+        username &&
+        displayName &&
+        email &&
+        password &&
+        confirmPassword &&
+        !isLoading
+      ) {
         void handleRegister();
       }
     },
-    [username, displayName, email, password, confirmPassword, isLoading, handleRegister]
+    [username, displayName, email, password, confirmPassword, isLoading, handleRegister],
   );
 
-  const isFormValid = username && displayName && email && password && confirmPassword && !passwordError;
+  const isFormValid =
+    username && displayName && email && password && confirmPassword && !passwordError;
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-5">
@@ -196,7 +205,10 @@ function RegisterPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link
+            to="/"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
             Back to home
           </Link>
         </div>

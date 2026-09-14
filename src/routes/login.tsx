@@ -49,7 +49,7 @@ function LoginPage() {
         void handleLogin();
       }
     },
-    [email, password, isLoading, handleLogin]
+    [email, password, isLoading, handleLogin],
   );
 
   return (
@@ -129,7 +129,10 @@ function LoginPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link
+            to="/"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
             Back to home
           </Link>
         </div>

@@ -1,11 +1,14 @@
 export function TypingIndicator({ names }: { names: string[] }) {
   if (names.length === 0) return null;
+  const visibleNames = names.slice(0, 3);
   const label =
     names.length === 1
-      ? `${names[0]} is typing`
+      ? `${visibleNames[0]} is typing`
       : names.length === 2
-        ? `${names[0]} and ${names[1]} are typing`
-        : "Several people are typing";
+        ? `${visibleNames[0]} and ${visibleNames[1]} are typing`
+        : names.length === 3
+          ? `${visibleNames[0]}, ${visibleNames[1]}, and ${visibleNames[2]} are typing`
+          : `${visibleNames[0]}, ${visibleNames[1]}, ${visibleNames[2]}, and ${names.length - 3} other${names.length - 3 === 1 ? "" : "s"} are typing`;
 
   return (
     <div

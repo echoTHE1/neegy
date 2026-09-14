@@ -8,7 +8,8 @@ export const Route = createFileRoute("/join/$code")({
       { title: "Join a Private Room — NEEGY" },
       {
         name: "description",
-        content: "Your access code is pre-filled. Add a display name to enter this private NEEGY room.",
+        content:
+          "Your access code is pre-filled. Add a display name to enter this private NEEGY room.",
       },
       { property: "og:title", content: "You're invited to a NEEGY room" },
       {

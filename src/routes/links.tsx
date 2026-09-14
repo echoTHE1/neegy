@@ -24,7 +24,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { BackgroundFX } from "@/components/nexus/BackgroundFX";
 import { Modal } from "@/components/nexus/Modal";
 import { NexusLockup } from "@/components/nexus/NexusLogo";
-import { Button, Field, GlassCard, HudTag, Skeleton, TextArea, TextInput } from "@/components/nexus/primitives";
+import {
+  Button,
+  Field,
+  GlassCard,
+  HudTag,
+  Skeleton,
+  TextArea,
+  TextInput,
+} from "@/components/nexus/primitives";
 import { notify } from "@/components/nexus/toast";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -122,24 +130,19 @@ function LinksPage() {
 
   const isOwner = Boolean(ownerToken);
 
-  const load = useCallback(
-    async (token?: string | null) => {
-      const result = token
-        ? await listAllPostsFn({ data: { token } })
-        : await listPublicPostsFn();
-      if (!result.ok) {
-        if (token) {
-          localStorage.removeItem(OWNER_TOKEN_KEY);
-          setOwnerToken(null);
-          const fallback = await listPublicPostsFn();
-          if (fallback.ok) setPosts(fallback.posts);
-        }
-        return;
+  const load = useCallback(async (token?: string | null) => {
+    const result = token ? await listAllPostsFn({ data: { token } }) : await listPublicPostsFn();
+    if (!result.ok) {
+      if (token) {
+        localStorage.removeItem(OWNER_TOKEN_KEY);
+        setOwnerToken(null);
+        const fallback = await listPublicPostsFn();
+        if (fallback.ok) setPosts(fallback.posts);
       }
-      setPosts(result.posts);
-    },
-    [],
-  );
+      return;
+    }
+    setPosts(result.posts);
+  }, []);
 
   /* initial load + restore owner session */
   useEffect(() => {
@@ -244,7 +247,9 @@ function LinksPage() {
     setSaving(false);
     if (!result.ok) {
       notify.error(
-        result.error === "INVALID_URL" ? "That link isn't a valid http(s) URL" : "Check the title and content",
+        result.error === "INVALID_URL"
+          ? "That link isn't a valid http(s) URL"
+          : "Check the title and content",
       );
       return;
     }
@@ -481,6 +486,7 @@ function LinksPage() {
             <TextInput
               id="owner-password"
               type="password"
+              autoFocus={unlockOpen}
               autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -615,7 +621,7 @@ function PostCard({
   return (
     <GlassCard
       className={cn(
-        "animate-slide-up p-5 transition-all",
+        "link-card animate-slide-up p-5 transition-all",
         post.pinned && "border-primary/40 shadow-[0_0_38px_-22px_var(--primary-glow)]",
         !post.published && "opacity-60",
       )}
@@ -633,7 +639,9 @@ function PostCard({
               </span>
             )}
           </div>
-          <h2 className="font-display mt-2.5 text-base font-bold tracking-[0.04em]">{post.title}</h2>
+          <h2 className="font-display mt-2.5 text-base font-bold tracking-[0.04em]">
+            {post.title}
+          </h2>
           {post.content && (
             <p className="mt-2 text-sm leading-relaxed whitespace-pre-wrap text-muted-foreground">
               {post.content}
@@ -654,14 +662,30 @@ function PostCard({
                 sideOffset={6}
                 className="animate-scale-in glass z-50 w-44 rounded-xl p-1.5 text-sm"
               >
-                <MenuItem icon={<Pencil className="h-3.5 w-3.5" />} label="Edit" onSelect={onEdit} />
                 <MenuItem
-                  icon={post.pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
+                  icon={<Pencil className="h-3.5 w-3.5" />}
+                  label="Edit"
+                  onSelect={onEdit}
+                />
+                <MenuItem
+                  icon={
+                    post.pinned ? (
+                      <PinOff className="h-3.5 w-3.5" />
+                    ) : (
+                      <Pin className="h-3.5 w-3.5" />
+                    )
+                  }
                   label={post.pinned ? "Unpin" : "Pin"}
                   onSelect={onTogglePin}
                 />
                 <MenuItem
-                  icon={post.published ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                  icon={
+                    post.published ? (
+                      <EyeOff className="h-3.5 w-3.5" />
+                    ) : (
+                      <Eye className="h-3.5 w-3.5" />
+                    )
+                  }
                   label={post.published ? "Hide" : "Publish"}
                   onSelect={onToggleHide}
                 />
@@ -699,14 +723,16 @@ function PostCard({
             <span className="truncate">{hostOf(post.url)}</span>
             <ExternalLink className="h-3.5 w-3.5 shrink-0" />
           </a>
-          <Button size="sm" variant="outline" onClick={copy}>
+          <Button size="sm" variant="outline" onClick={copy} aria-live="polite">
             {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
             {copied ? "Copied" : "Copy link"}
           </Button>
         </div>
       )}
 
-      <p className="mt-4 font-mono text-[10px] text-muted-foreground">{relativeDate(post.createdAt)}</p>
+      <p className="mt-4 font-mono text-[10px] text-muted-foreground">
+        {relativeDate(post.createdAt)}
+      </p>
     </GlassCard>
   );
 }

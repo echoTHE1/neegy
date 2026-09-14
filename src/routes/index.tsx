@@ -1,5 +1,5 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, KeyRound, Lock, Radio, Sparkles, Users } from "lucide-react";
+import { ArrowRight, KeyRound, Link2, Lock, Radio, Sparkles, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { BackgroundFX } from "@/components/nexus/BackgroundFX";
@@ -74,7 +74,7 @@ function Landing() {
       </header>
 
       <main className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-24">
-        <section className="animate-fade-in flex flex-col items-center pt-10 text-center sm:pt-16">
+        <section className="hero-sequence flex flex-col items-center pt-10 text-center sm:pt-16">
           <HudTag className="rounded-full border border-border bg-surface px-3 py-1">
             <span className="h-1.5 w-1.5 rounded-full bg-success" aria-hidden /> Private channels ·
             live
@@ -89,11 +89,11 @@ function Landing() {
           </h1>
 
           <p className="mt-5 max-w-xl text-balance text-sm leading-relaxed text-muted-foreground sm:text-base">
-            <NexusWordmark className="text-sm" /> creates a sealed group chat in one click. Share the
-            access code with your crew — nobody else can find it, request it, or join it.
+            <NexusWordmark className="text-sm" /> creates a sealed group chat in one click. Share
+            the access code with your crew — nobody else can find it, request it, or join it.
           </p>
 
-          <div className="mt-9 flex w-full max-w-md flex-col gap-3 sm:flex-row sm:justify-center">
+          <div className="mt-9 grid w-full max-w-md gap-3 sm:grid-cols-2">
             <Button size="lg" className="flex-1" onClick={() => void navigate({ to: "/create" })}>
               Create a room <ArrowRight className="h-4 w-4" />
             </Button>
@@ -104,6 +104,14 @@ function Landing() {
               onClick={() => void navigate({ to: "/join" })}
             >
               <KeyRound className="h-4 w-4" /> Join with code
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="neegy-links-button sm:col-span-2"
+              onClick={() => void navigate({ to: "/links" })}
+            >
+              <Link2 className="neegy-links-icon h-4 w-4" /> NEEGY Links
             </Button>
           </div>
 
@@ -140,8 +148,12 @@ function Landing() {
         </section>
 
         <section className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURES.map(({ icon: Icon, title, body }) => (
-            <GlassCard key={title} className="animate-slide-up p-5">
+          {FEATURES.map(({ icon: Icon, title, body }, index) => (
+            <GlassCard
+              key={title}
+              className="feature-card animate-slide-up p-5"
+              style={{ animationDelay: `${index * 90}ms` }}
+            >
               <Icon className="h-5 w-5 text-primary" aria-hidden />
               <h2 className="mt-3 font-display text-xs tracking-[0.18em] uppercase">{title}</h2>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{body}</p>

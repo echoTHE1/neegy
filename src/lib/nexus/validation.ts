@@ -10,8 +10,11 @@ const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 /** Strips control characters (except newlines) and collapses excess whitespace. */
 export function sanitizeText(input: string, maxLength: number, allowNewlines = false): string {
   let value = String(input ?? "");
-  // eslint-disable-next-line no-control-regex
-  value = value.replace(allowNewlines ? /[\u0000-\u0009\u000b-\u001f\u007f]/g : /[\u0000-\u001f\u007f]/g, "");
+  value = value.replace(
+    // eslint-disable-next-line no-control-regex
+    allowNewlines ? /[\u0000-\u0009\u000b-\u001f\u007f]/g : /[\u0000-\u001f\u007f]/g,
+    "",
+  );
   if (allowNewlines) value = value.replace(/\n{4,}/g, "\n\n\n");
   value = value.replace(/[ \t]{3,}/g, "  ");
   return value.trim().slice(0, maxLength);

@@ -9,7 +9,12 @@ export interface UseAuthReturn {
   userId: string | null;
   authToken: string | null;
   error: string | null;
-  register: (username: string, displayName: string, email: string, password: string) => Promise<boolean>;
+  register: (
+    username: string,
+    displayName: string,
+    email: string,
+    password: string,
+  ) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   checkSession: () => Promise<void>;
@@ -50,7 +55,7 @@ export function useAuth(): UseAuthReturn {
           });
 
           if (response.ok) {
-            const data = await response.json() as { user: UserDTO };
+            const data = (await response.json()) as { user: UserDTO };
             setUser(data.user);
             setUserId(persistedUserId);
             setAuthToken(persistedToken);
@@ -97,13 +102,13 @@ export function useAuth(): UseAuthReturn {
         });
 
         if (!response.ok) {
-          const errorData = await response.json() as { error?: string };
+          const errorData = (await response.json()) as { error?: string };
           setError(errorData.error || "Registration failed");
           setState("error");
           return false;
         }
 
-        const data = await response.json() as { user: UserDTO; authToken: string };
+        const data = (await response.json()) as { user: UserDTO; authToken: string };
         setUser(data.user);
         setUserId(data.user.id);
         setAuthToken(data.authToken);
@@ -118,52 +123,49 @@ export function useAuth(): UseAuthReturn {
         return false;
       }
     },
-    []
+    [],
   );
 
-  const login = useCallback(
-    async (email: string, password: string) => {
-      if (!email || !password) {
-        setError("Email and password are required");
-        return false;
-      }
+  const login = useCallback(async (email: string, password: string) => {
+    if (!email || !password) {
+      setError("Email and password are required");
+      return false;
+    }
 
-      setState("loading");
-      setError(null);
+    setState("loading");
+    setError(null);
 
-      try {
-        const passwordHash = await hashPassword(password);
+    try {
+      const passwordHash = await hashPassword(password);
 
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, passwordHash }),
-        });
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, passwordHash }),
+      });
 
-        if (!response.ok) {
-          const errorData = await response.json() as { error?: string };
-          setError(errorData.error || "Login failed");
-          setState("error");
-          return false;
-        }
-
-        const data = await response.json() as { user: UserDTO; authToken: string };
-        setUser(data.user);
-        setUserId(data.user.id);
-        setAuthToken(data.authToken);
-        localStorage.setItem(STORAGE_KEY_USER_ID, data.user.id);
-        localStorage.setItem(STORAGE_KEY_AUTH_TOKEN, data.authToken);
-        setState("authenticated");
-        return true;
-      } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : "Login failed";
-        setError(errorMsg);
+      if (!response.ok) {
+        const errorData = (await response.json()) as { error?: string };
+        setError(errorData.error || "Login failed");
         setState("error");
         return false;
       }
-    },
-    []
-  );
+
+      const data = (await response.json()) as { user: UserDTO; authToken: string };
+      setUser(data.user);
+      setUserId(data.user.id);
+      setAuthToken(data.authToken);
+      localStorage.setItem(STORAGE_KEY_USER_ID, data.user.id);
+      localStorage.setItem(STORAGE_KEY_AUTH_TOKEN, data.authToken);
+      setState("authenticated");
+      return true;
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      setError(errorMsg);
+      setState("error");
+      return false;
+    }
+  }, []);
 
   const logout = useCallback(async () => {
     if (!userId || !authToken) return;
@@ -201,7 +203,7 @@ export function useAuth(): UseAuthReturn {
         return;
       }
 
-      const data = await response.json() as { user: UserDTO };
+      const data = (await response.json()) as { user: UserDTO };
       setUser(data.user);
     } catch (err) {
       console.error("Session check error:", err);
@@ -228,13 +230,13 @@ export function useAuth(): UseAuthReturn {
         });
 
         if (!response.ok) {
-          const errorData = await response.json() as { error?: string };
+          const errorData = (await response.json()) as { error?: string };
           setError(errorData.error || "Profile update failed");
           setState("error");
           return false;
         }
 
-        const data = await response.json() as { user: UserDTO };
+        const data = (await response.json()) as { user: UserDTO };
         setUser(data.user);
         setState("authenticated");
         return true;
@@ -245,7 +247,7 @@ export function useAuth(): UseAuthReturn {
         return false;
       }
     },
-    [userId, authToken]
+    [userId, authToken],
   );
 
   return {

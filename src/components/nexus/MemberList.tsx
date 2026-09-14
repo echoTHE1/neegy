@@ -51,7 +51,9 @@ export function MemberList({
                 {member.id === myId && <span className="ml-1 text-muted-foreground">(you)</span>}
               </p>
               <p className="flex items-center gap-1.5">
-                <span className={cn("hud-label", online ? "text-success" : "text-muted-foreground")}>
+                <span
+                  className={cn("hud-label", online ? "text-success" : "text-muted-foreground")}
+                >
                   {online ? "Online" : "Offline"}
                 </span>
                 {member.isOwner && (

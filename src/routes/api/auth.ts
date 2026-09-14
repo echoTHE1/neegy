@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
 async function handleRegister(request: Request) {
   try {
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       username: string;
       displayName: string;
       email: string;
@@ -62,7 +62,7 @@ async function handleRegister(request: Request) {
 
 async function handleLogin(request: Request) {
   try {
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       email: string;
       passwordHash: string;
     };
@@ -88,7 +88,7 @@ async function handleLogin(request: Request) {
 
 async function handleLogout(request: Request) {
   try {
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       userId: string;
       token: string;
     };
@@ -111,7 +111,7 @@ async function handleLogout(request: Request) {
 
 async function handleVerifySession(request: Request) {
   try {
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       userId: string;
       token: string;
     };
@@ -131,7 +131,7 @@ async function handleVerifySession(request: Request) {
 
 async function handleUpdateProfile(request: Request) {
   try {
-    const body = await request.json() as {
+    const body = (await request.json()) as {
       userId: string;
       token: string;
       displayName?: string;

@@ -191,6 +191,28 @@
     background-position: 80px 80px;
   }
 }
+@keyframes sheen {
+  0%,
+  58% {
+    background-position: 180% 0;
+  }
+  100% {
+    background-position: -30% 0;
+  }
+}
+@keyframes gold-breathe {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px oklch(0.78 0.16 82 / 0.12),
+      0 12px 34px -22px var(--primary-glow);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px oklch(0.78 0.16 82 / 0.38),
+      0 16px 44px -18px var(--primary-glow);
+  }
+}
 
 @utility glass {
   background: var(--surface);
@@ -209,6 +231,82 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+  background-size: 180% 100%;
+  animation: sheen 8s ease-in-out infinite;
+}
+
+.hero-sequence > * {
+  animation: slide-up 0.58s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-sequence > :nth-child(1) {
+  animation-delay: 120ms;
+}
+.hero-sequence > :nth-child(2) {
+  animation-delay: 240ms;
+}
+.hero-sequence > :nth-child(3) {
+  animation-delay: 360ms;
+}
+.hero-sequence > :nth-child(4) {
+  animation-delay: 470ms;
+}
+.hero-sequence > :nth-child(5) {
+  animation-delay: 580ms;
+}
+.neegy-links-button {
+  overflow: hidden;
+  border-color: oklch(0.78 0.16 82 / 0.48);
+  animation: gold-breathe 3.6s ease-in-out infinite;
+}
+.neegy-links-button::before,
+.link-card::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 35%,
+    oklch(0.95 0.08 90 / 0.18) 48%,
+    transparent 61%
+  );
+  transform: translateX(-130%);
+  transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.neegy-links-button:hover::before,
+.link-card:hover::after {
+  transform: translateX(130%);
+}
+.neegy-links-button:hover .neegy-links-icon {
+  transform: rotate(-8deg) translateY(-1px);
+}
+.neegy-links-icon {
+  transition: transform 220ms ease;
+}
+.feature-card {
+  transition:
+    transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 240ms ease,
+    box-shadow 240ms ease;
+}
+.feature-card:hover {
+  transform: translateY(-5px) rotateX(1deg);
+  border-color: oklch(0.78 0.16 82 / 0.42);
+  box-shadow: 0 18px 45px -26px var(--primary-glow);
+}
+.link-card {
+  overflow: hidden;
+}
+.link-card:hover {
+  transform: translateY(-3px);
+  border-color: oklch(0.78 0.16 82 / 0.55);
+  box-shadow: 0 20px 48px -28px var(--primary-glow);
+}
+.link-card a:hover svg:last-child {
+  transform: translate(2px, -2px);
+}
+.link-card a svg:last-child {
+  transition: transform 180ms ease;
 }
 
 @utility hud-label {

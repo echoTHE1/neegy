@@ -111,12 +111,7 @@ export function JoinScreen({ presetCode }: { presetCode?: string }) {
               />
             </Field>
 
-            <Field
-              label="Access code"
-              htmlFor="joinCode"
-              hint="Format: NXS-XXX-XXX"
-              error={error}
-            >
+            <Field label="Access code" htmlFor="joinCode" hint="Format: NXS-XXX-XXX" error={error}>
               <TextInput
                 id="joinCode"
                 value={code}

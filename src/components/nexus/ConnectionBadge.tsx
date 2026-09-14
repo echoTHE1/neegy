@@ -8,7 +8,13 @@ const MAP: Record<ConnectionState, { label: string; glyph: string; tone: string 
   offline: { label: "Offline", glyph: "○", tone: "text-destructive" },
 };
 
-export function ConnectionBadge({ state, className }: { state: ConnectionState; className?: string }) {
+export function ConnectionBadge({
+  state,
+  className,
+}: {
+  state: ConnectionState;
+  className?: string;
+}) {
   const item = MAP[state];
   return (
     <span

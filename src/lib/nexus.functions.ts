@@ -14,9 +14,18 @@ export const createRoomFn = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
     z
       .object({
-        displayName: z.string().min(1).max(LIMITS.displayName + 20),
-        roomName: z.string().min(1).max(LIMITS.roomName + 20),
-        description: z.string().max(LIMITS.description + 40).optional(),
+        displayName: z
+          .string()
+          .min(1)
+          .max(LIMITS.displayName + 20),
+        roomName: z
+          .string()
+          .min(1)
+          .max(LIMITS.roomName + 20),
+        description: z
+          .string()
+          .max(LIMITS.description + 40)
+          .optional(),
       })
       .parse(data),
   )
@@ -26,7 +35,10 @@ export const joinRoomFn = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) =>
     z
       .object({
-        displayName: z.string().min(1).max(LIMITS.displayName + 20),
+        displayName: z
+          .string()
+          .min(1)
+          .max(LIMITS.displayName + 20),
         code: z.string().min(3).max(32),
       })
       .parse(data),
@@ -46,7 +58,10 @@ export const sendMessageFn = createServerFn({ method: "POST" })
     z
       .object({
         ...roomAuth,
-        body: z.string().min(1).max(LIMITS.message + 500),
+        body: z
+          .string()
+          .min(1)
+          .max(LIMITS.message + 500),
         replyTo: z.string().uuid().nullable().optional(),
       })
       .parse(data),
@@ -59,7 +74,10 @@ export const editMessageFn = createServerFn({ method: "POST" })
       .object({
         ...roomAuth,
         messageId: z.string().uuid(),
-        body: z.string().min(1).max(LIMITS.message + 500),
+        body: z
+          .string()
+          .min(1)
+          .max(LIMITS.message + 500),
       })
       .parse(data),
   )
@@ -92,8 +110,14 @@ export const updateRoomFn = createServerFn({ method: "POST" })
     z
       .object({
         ...roomAuth,
-        name: z.string().min(1).max(LIMITS.roomName + 20),
-        description: z.string().max(LIMITS.description + 40).optional(),
+        name: z
+          .string()
+          .min(1)
+          .max(LIMITS.roomName + 20),
+        description: z
+          .string()
+          .max(LIMITS.description + 40)
+          .optional(),
       })
       .parse(data),
   )

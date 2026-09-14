@@ -18,7 +18,13 @@ import {
   toggleReactionFn,
   updateRoomFn,
 } from "@/lib/nexus.functions";
-import { ERROR_COPY, type MemberDTO, type MessageDTO, type NexusErrorCode, type RoomDTO } from "@/lib/nexus/types";
+import {
+  ERROR_COPY,
+  type MemberDTO,
+  type MessageDTO,
+  type NexusErrorCode,
+  type RoomDTO,
+} from "@/lib/nexus/types";
 
 export type ConnectionState = "connecting" | "connected" | "reconnecting" | "offline";
 export type RoomStatus = "loading" | "ready" | "closed" | "error";
@@ -43,7 +49,12 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
   const lastTypingSent = useRef(0);
 
   const handleFailure = useCallback((code: NexusErrorCode) => {
-    if (code === "ROOM_CLOSED" || code === "REMOVED" || code === "NOT_A_MEMBER" || code === "ROOM_NOT_FOUND") {
+    if (
+      code === "ROOM_CLOSED" ||
+      code === "REMOVED" ||
+      code === "NOT_A_MEMBER" ||
+      code === "ROOM_NOT_FOUND"
+    ) {
       setClosedReason(code);
       setStatus("closed");
       return;
@@ -157,12 +168,16 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
         }
       })
       .on("broadcast", { event: "typing" }, ({ payload }) => {
-        const data = payload as { memberId: string; name: string };
+        const data = payload as { memberId: string; name: string; active?: boolean };
         if (data.memberId === memberId) return;
-        setTyping((prev) => [
-          ...prev.filter((t) => t.id !== data.memberId),
-          { id: data.memberId, name: data.name, at: Date.now() },
-        ]);
+        setTyping((prev) =>
+          data.active === false
+            ? prev.filter((t) => t.id !== data.memberId)
+            : [
+                ...prev.filter((t) => t.id !== data.memberId),
+                { id: data.memberId, name: data.name, at: Date.now() },
+              ],
+        );
       })
       .on("presence", { event: "sync" }, () => {
         setOnlineIds(Object.keys(channel.presenceState()));
@@ -181,6 +196,11 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
       });
 
     return () => {
+      void channel.send({
+        type: "broadcast",
+        event: "typing",
+        payload: { memberId, name: "", active: false },
+      });
       channelRef.current = null;
       void supabase.removeChannel(channel);
     };
@@ -223,9 +243,10 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
       }
       upsertMessage(result.message);
       broadcast("message", result.message);
+      broadcast("typing", { memberId, name: "", active: false });
       return true;
     },
-    [roomId, token, handleFailure, upsertMessage, broadcast],
+    [roomId, token, memberId, handleFailure, upsertMessage, broadcast],
   );
 
   const edit = useCallback(
@@ -268,12 +289,20 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
     setHasMore(result.hasMore);
   }, [messages, roomId, token, handleFailure]);
 
-  const sendTyping = useCallback(() => {
-    const now = Date.now();
-    if (now - lastTypingSent.current < 1800) return;
-    lastTypingSent.current = now;
-    broadcast("typing", { memberId, name: me?.displayName ?? "Someone" });
-  }, [broadcast, memberId, me?.displayName]);
+  const sendTyping = useCallback(
+    (active: boolean) => {
+      if (!active) {
+        lastTypingSent.current = 0;
+        broadcast("typing", { memberId, name: "", active: false });
+        return;
+      }
+      const now = Date.now();
+      if (now - lastTypingSent.current < 1800) return;
+      lastTypingSent.current = now;
+      broadcast("typing", { memberId, name: me?.displayName ?? "Someone", active: true });
+    },
+    [broadcast, memberId, me?.displayName],
+  );
 
   const owner = useMemo(
     () => ({

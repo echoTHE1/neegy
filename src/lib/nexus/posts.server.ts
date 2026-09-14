@@ -96,7 +96,9 @@ async function verifyOwnerToken(token: string): Promise<boolean> {
   return constantTimeEqual(await hmac(`owner.${expRaw}`), signature);
 }
 
-export async function ownerUnlock(password: string): Promise<PostResult<{ token: string; expiresAt: number }>> {
+export async function ownerUnlock(
+  password: string,
+): Promise<PostResult<{ token: string; expiresAt: number }>> {
   const expected = process.env["NEEGY_OWNER_PASSWORD"];
   if (!expected) return failed("NOT_CONFIGURED");
   const given = String(password ?? "");
@@ -133,7 +135,9 @@ function normalizeUrl(raw: string | null | undefined): string | null | "INVALID"
 }
 
 function normalizeCategory(raw: string | undefined): PostCategory {
-  const value = String(raw ?? "").trim().toUpperCase();
+  const value = String(raw ?? "")
+    .trim()
+    .toUpperCase();
   return (POST_CATEGORIES as readonly string[]).includes(value) ? (value as PostCategory) : "OTHER";
 }
 

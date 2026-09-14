@@ -80,7 +80,10 @@ async function getUserByUsername(username: string): Promise<Record<string, unkno
   return data ?? null;
 }
 
-async function authenticateUser(userId: string, token: string): Promise<Record<string, unknown> | Fail> {
+async function authenticateUser(
+  userId: string,
+  token: string,
+): Promise<Record<string, unknown> | Fail> {
   if (!userId || !token) return fail("NOT_A_MEMBER");
 
   const { data: user, error } = await db
@@ -200,11 +203,11 @@ export async function updateUserProfile(input: {
   if (input.displayName !== undefined) {
     const displayName = sanitizeText(input.displayName, LIMITS.displayName);
     if (!displayName) return fail("INVALID_INPUT");
-    updates['display_name'] = displayName;
+    updates["display_name"] = displayName;
   }
 
   if (input.avatar !== undefined) {
-    updates['avatar'] = input.avatar;
+    updates["avatar"] = input.avatar;
   }
 
   const { data, error } = await db
