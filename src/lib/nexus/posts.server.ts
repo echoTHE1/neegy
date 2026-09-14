@@ -171,9 +171,9 @@ export async function createPost(input: {
   token: string;
   title: string;
   content: string;
-  url?: string | null;
-  category?: string;
-  pinned?: boolean;
+  url?: string | null | undefined;
+  category?: string | undefined;
+  pinned?: boolean | undefined;
 }): Promise<PostResult<{ post: PostDTO }>> {
   if (!(await verifyOwnerToken(input.token))) return failed("UNAUTHORIZED");
 
@@ -213,12 +213,12 @@ export async function createPost(input: {
 export async function updatePost(input: {
   token: string;
   postId: string;
-  title?: string;
-  content?: string;
-  url?: string | null;
-  category?: string;
-  pinned?: boolean;
-  published?: boolean;
+  title?: string | undefined;
+  content?: string | undefined;
+  url?: string | null | undefined;
+  category?: string | undefined;
+  pinned?: boolean | undefined;
+  published?: boolean | undefined;
 }): Promise<PostResult<{ post: PostDTO }>> {
   if (!(await verifyOwnerToken(input.token))) return failed("UNAUTHORIZED");
 
