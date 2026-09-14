@@ -119,6 +119,48 @@ export type Database = {
           },
         ]
       }
+      owner_posts: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          created_by: string
+          display_order: number
+          id: string
+          pinned: boolean
+          published: boolean
+          title: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          category?: string
+          content?: string
+          created_at?: string
+          created_by?: string
+          display_order?: number
+          id?: string
+          pinned?: boolean
+          published?: boolean
+          title: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          created_by?: string
+          display_order?: number
+          id?: string
+          pinned?: boolean
+          published?: boolean
+          title?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       rooms: {
         Row: {
           active: boolean

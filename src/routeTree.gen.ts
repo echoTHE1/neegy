@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CreateRouteImport } from './routes/create'
 import { Route as JoinRouteImport } from './routes/join'
+import { Route as LinksRouteImport } from './routes/links'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as JoinCodeRouteImport } from './routes/join.$code'
@@ -30,6 +31,11 @@ const CreateRoute = CreateRouteImport.update({
 const JoinRoute = JoinRouteImport.update({
   id: '/join',
   path: '/join',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LinksRoute = LinksRouteImport.update({
+  id: '/links',
+  path: '/links',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/join': typeof JoinRouteWithChildren
+  '/links': typeof LinksRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/join/$code': typeof JoinCodeRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/join': typeof JoinRouteWithChildren
+  '/links': typeof LinksRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/join/$code': typeof JoinCodeRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/join': typeof JoinRouteWithChildren
+  '/links': typeof LinksRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/join/$code': typeof JoinCodeRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/join'
+    | '/links'
     | '/login'
     | '/register'
     | '/join/$code'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/join'
+    | '/links'
     | '/login'
     | '/register'
     | '/join/$code'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/join'
+    | '/links'
     | '/login'
     | '/register'
     | '/join/$code'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
   JoinRoute: typeof JoinRouteWithChildren
+  LinksRoute: typeof LinksRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   RoomRoomIdRoute: typeof RoomRoomIdRoute
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/join'
       fullPath: '/join'
       preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/links': {
+      id: '/links'
+      path: '/links'
+      fullPath: '/links'
+      preLoaderRoute: typeof LinksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -188,6 +208,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
   JoinRoute: JoinRouteWithChildren,
+  LinksRoute: LinksRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   RoomRoomIdRoute: RoomRoomIdRoute,
