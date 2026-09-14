@@ -1,7 +1,8 @@
 import { LogOut, Settings, User } from "lucide-react";
 import { useState } from "react";
 import type { UserDTO } from "@/lib/nexus/auth.server";
-import { Button, Field, GlassCard, TextInput, TextArea, Modal } from "@/components/nexus/primitives";
+import { Button, Field, GlassCard, TextInput, TextArea } from "@/components/nexus/primitives";
+import { Modal } from "@/components/nexus/Modal";
 
 interface UserMenuProps {
   user: UserDTO | null;

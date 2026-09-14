@@ -118,7 +118,7 @@ async function handleVerifySession(request: Request) {
 
     const result = await verifyUserSession(body.userId, body.token);
 
-    if ("error" in result && !("ok" in result)) {
+    if ("ok" in result && result.ok === false) {
       return json({ error: result.error }, { status: 400 });
     }
 
@@ -141,8 +141,8 @@ async function handleUpdateProfile(request: Request) {
     const result = await updateUserProfile({
       userId: body.userId,
       token: body.token,
-      displayName: body.displayName,
-      avatar: body.avatar,
+      ...(body.displayName !== undefined ? { displayName: body.displayName } : {}),
+      ...(body.avatar !== undefined ? { avatar: body.avatar } : {}),
     });
 
     if (!result.ok) {

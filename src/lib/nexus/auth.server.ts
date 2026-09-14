@@ -200,11 +200,11 @@ export async function updateUserProfile(input: {
   if (input.displayName !== undefined) {
     const displayName = sanitizeText(input.displayName, LIMITS.displayName);
     if (!displayName) return fail("INVALID_INPUT");
-    updates.display_name = displayName;
+    updates['display_name'] = displayName;
   }
 
   if (input.avatar !== undefined) {
-    updates.avatar = input.avatar;
+    updates['avatar'] = input.avatar;
   }
 
   const { data, error } = await db
