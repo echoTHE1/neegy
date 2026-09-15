@@ -38,30 +38,16 @@ export const Route = createFileRoute("/create")({
   component: CreatePage,
 });
 
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error && error.message.trim()) {
-    return error.message;
-  }
-
-  if (typeof error === "string" && error.trim()) {
-    return error;
-  }
-
-  return "The server could not create the room. Please try again.";
-}
-
 function CreatePage() {
   const navigate = useNavigate();
-
   const [displayName, setDisplayName] = useState("");
   const [roomName, setRoomName] = useState("");
   const [description, setDescription] = useState("");
-
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [created, setCreated] = useState<RoomDTO | null>(null);
 
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (loading) return;
@@ -71,9 +57,7 @@ function CreatePage() {
     const cleanDescription = description.trim();
 
     if (!cleanDisplayName || !cleanRoomName) {
-      const message = "Enter your display name and a room name.";
-      setError(message);
-      notify.error("Missing information", message);
+      setError("Enter your display name and a room name.");
       return;
     }
 
@@ -89,25 +73,21 @@ function CreatePage() {
         },
       });
 
-      if (!result || typeof result !== "object") {
-        throw new Error("The server returned an invalid response.");
-      }
-
       if (!result.ok) {
         const copy = ERROR_COPY[result.error];
 
-        const title = copy?.title ?? "Unable to create room";
-        const detail =
-          copy?.detail ??
-          "The server rejected the room creation request.";
+        if (copy) {
+          setError(copy.detail);
+          notify.error(copy.title, copy.detail);
+        } else {
+          setError("The server rejected the room creation request.");
+          notify.error(
+            "Unable to create room",
+            "The server rejected the room creation request.",
+          );
+        }
 
-        setError(detail);
-        notify.error(title, detail);
         return;
-      }
-
-      if (!result.room?.id || !result.member?.id || !result.token) {
-        throw new Error("The server created an incomplete room response.");
       }
 
       saveSession({
@@ -119,23 +99,17 @@ function CreatePage() {
       });
 
       setCreated(result.room);
-      notify.success("Room created", "Your private NEEGY room is ready.");
-    } catch (caughtError) {
-      console.error("[NEEGY] Create room failed:", caughtError);
+    } catch (error) {
+      console.error("[NEEGY] createRoom failed:", error);
 
-      const message = getErrorMessage(caughtError);
+      setError(
+        "The server could not create the room. Check the deployment configuration and try again.",
+      );
 
-      // Keep the UI useful without exposing sensitive server internals.
-      const safeMessage =
-        /SUPABASE_SERVICE_ROLE_KEY|SUPABASE_URL|secret|service.role/i.test(
-          message,
-        )
-          ? "The server is missing its Supabase configuration. Check the deployment environment variables."
-          : message;
-
-      setError(safeMessage);
-
-      notify.error("Unable to create room", safeMessage);
+      notify.error(
+        "Unable to create room",
+        "The server could not create the room.",
+      );
     } finally {
       setLoading(false);
     }
@@ -207,7 +181,7 @@ function CreatePage() {
 
             <form
               className="mt-6 space-y-5"
-              onSubmit={submit}
+              onSubmit={(event) => void submit(event)}
               noValidate
             >
               <Field
@@ -222,7 +196,6 @@ function CreatePage() {
                   autoFocus
                   maxLength={LIMITS.displayName}
                   placeholder="e.g. Ava"
-                  disabled={loading}
                   onChange={(event) => setDisplayName(event.target.value)}
                 />
               </Field>
@@ -237,7 +210,6 @@ function CreatePage() {
                   value={roomName}
                   maxLength={LIMITS.roomName}
                   placeholder="e.g. Launch war room"
-                  disabled={loading}
                   onChange={(event) => setRoomName(event.target.value)}
                 />
               </Field>
@@ -255,7 +227,6 @@ function CreatePage() {
                   value={description}
                   maxLength={LIMITS.description}
                   placeholder="Optional"
-                  disabled={loading}
                   onChange={(event) => setDescription(event.target.value)}
                 />
               </Field>
@@ -265,7 +236,6 @@ function CreatePage() {
                 size="lg"
                 className="w-full"
                 loading={loading}
-                disabled={loading}
               >
                 {loading ? "Creating" : "Create room"}
               </Button>
