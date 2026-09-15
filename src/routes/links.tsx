@@ -264,7 +264,10 @@ function LinksPage() {
   const patch = async (post: PostDTO, changes: Partial<Pick<PostDTO, "pinned" | "published">>) => {
     if (!ownerToken) return;
     const result = await updatePostFn({ data: { token: ownerToken, postId: post.id, ...changes } });
-    if (!result.ok) return notify.error("Could not update the post");
+    if (!result.ok) {
+      notify.error("Could not update the post");
+      return;
+    }
     await load(ownerToken);
     announce();
   };
@@ -281,7 +284,10 @@ function LinksPage() {
     const result = await reorderPostsFn({
       data: { token: ownerToken, postIds: reordered.map((p) => p.id) },
     });
-    if (!result.ok) return notify.error("Could not reorder");
+    if (!result.ok) {
+      notify.error("Could not reorder");
+      return;
+    }
     await load(ownerToken);
     announce();
   };
@@ -290,7 +296,10 @@ function LinksPage() {
     if (!ownerToken || !pendingDelete) return;
     const result = await deletePostFn({ data: { token: ownerToken, postId: pendingDelete.id } });
     setPendingDelete(null);
-    if (!result.ok) return notify.error("Could not delete the post");
+    if (!result.ok) {
+      notify.error("Could not delete the post");
+      return;
+    }
     notify.success("✓ Post deleted");
     await load(ownerToken);
     announce();
