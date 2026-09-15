@@ -163,25 +163,39 @@ function LinksPage() {
     })();
   }, [load]);
 
-  /* realtime: any owner change refreshes every open page */
+  /* realtime: any owner change refreshes every open page (optional enhancement) */
   useEffect(() => {
-    const channel = supabase
-      .channel(LINKS_CHANNEL)
-      .on("broadcast", { event: "links-changed" }, () => {
-        void load(localStorage.getItem(OWNER_TOKEN_KEY));
-      })
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
+    let cleanup: (() => void) | undefined;
+    try {
+      const channel = supabase
+        .channel(LINKS_CHANNEL)
+        .on("broadcast", { event: "links-changed" }, () => {
+          void load(localStorage.getItem(OWNER_TOKEN_KEY));
+        })
+        .subscribe();
+      cleanup = () => {
+        try {
+          void supabase.removeChannel(channel);
+        } catch {
+          /* realtime unavailable */
+        }
+      };
+    } catch {
+      /* realtime unavailable — page still works without live refresh */
+    }
+    return () => cleanup?.();
   }, [load]);
 
   const announce = useCallback(() => {
-    void supabase.channel(LINKS_CHANNEL).send({
-      type: "broadcast",
-      event: "links-changed",
-      payload: {},
-    });
+    try {
+      void supabase.channel(LINKS_CHANNEL).send({
+        type: "broadcast",
+        event: "links-changed",
+        payload: {},
+      });
+    } catch {
+      /* realtime unavailable */
+    }
   }, []);
 
   const visible = useMemo(() => {
