@@ -80,6 +80,7 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
   }, []);
 
   const refresh = useCallback(async () => {
+<<<<<<< HEAD
     try {
       const result = await getRoomStateFn({ data: { roomId, token } });
       if (!result.ok) {
@@ -99,6 +100,19 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
       setStatus("error");
       notify.error("ROOM CONNECTION FAILED", "The room server could not be reached.");
     }
+=======
+    const result = await getRoomStateFn({ data: { roomId, token } });
+    if (!result.ok) {
+      handleFailure(result.error);
+      return;
+    }
+    setRoom(result.room);
+    setMe(result.me);
+    setMembers(result.members);
+    setMessages(result.messages);
+    setHasMore(result.hasMore);
+    setStatus("ready");
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
   }, [roomId, token, handleFailure]);
 
   const softRefresh = useCallback(async () => {
@@ -132,6 +146,7 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
         setMembers(result.members);
         setMessages(result.messages);
         setHasMore(result.hasMore);
+<<<<<<< HEAD
         setConnection("connected");
         setStatus("ready");
       })
@@ -142,6 +157,12 @@ export function useNexusRoom(roomId: string, token: string, memberId: string) {
           setStatus("error");
           notify.error("ROOM CONNECTION FAILED", "The room server could not be reached.");
         }
+=======
+        setStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
       });
     return () => {
       cancelled = true;

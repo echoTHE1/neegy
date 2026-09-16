@@ -113,7 +113,10 @@ function relativeDate(iso: string): string {
 
 function LinksPage() {
   const [posts, setPosts] = useState<PostDTO[] | null>(null);
+<<<<<<< HEAD
   const [loadError, setLoadError] = useState<string | null>(null);
+=======
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("ALL");
 
@@ -132,6 +135,7 @@ function LinksPage() {
   const isOwner = Boolean(ownerToken);
 
   const load = useCallback(async (token?: string | null) => {
+<<<<<<< HEAD
     try {
       setLoadError(null);
       const result = token
@@ -164,6 +168,19 @@ function LinksPage() {
         "NEEGY Links is temporarily unavailable. Check the deployment's Supabase server configuration.",
       );
     }
+=======
+    const result = token ? await listAllPostsFn({ data: { token } }) : await listPublicPostsFn();
+    if (!result.ok) {
+      if (token) {
+        localStorage.removeItem(OWNER_TOKEN_KEY);
+        setOwnerToken(null);
+        const fallback = await listPublicPostsFn();
+        if (fallback.ok) setPosts(fallback.posts);
+      }
+      return;
+    }
+    setPosts(result.posts);
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
   }, []);
 
   /* initial load + restore owner session */
@@ -174,6 +191,7 @@ function LinksPage() {
       return;
     }
     void (async () => {
+<<<<<<< HEAD
       try {
         const check = await ownerCheckFn({ data: { token: stored } });
         if (check.ok) {
@@ -188,6 +206,16 @@ function LinksPage() {
       localStorage.removeItem(OWNER_TOKEN_KEY);
       setOwnerToken(null);
       await load(null);
+=======
+      const check = await ownerCheckFn({ data: { token: stored } });
+      if (check.ok) {
+        setOwnerToken(stored);
+        await load(stored);
+      } else {
+        localStorage.removeItem(OWNER_TOKEN_KEY);
+        await load(null);
+      }
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
     })();
   }, [load]);
 
@@ -247,6 +275,7 @@ function LinksPage() {
   const handleUnlock = async () => {
     setUnlocking(true);
     setUnlockError(null);
+<<<<<<< HEAD
     try {
       const result = await ownerUnlockFn({ data: { password } });
       if (!result.ok) {
@@ -271,6 +300,24 @@ function LinksPage() {
     } finally {
       setUnlocking(false);
     }
+=======
+    const result = await ownerUnlockFn({ data: { password } });
+    setUnlocking(false);
+    if (!result.ok) {
+      setUnlockError(
+        result.error === "NOT_CONFIGURED"
+          ? "Owner access is not configured yet."
+          : "Incorrect password.",
+      );
+      return;
+    }
+    localStorage.setItem(OWNER_TOKEN_KEY, result.token);
+    setOwnerToken(result.token);
+    setPassword("");
+    setUnlockOpen(false);
+    notify.success("Owner mode unlocked");
+    await load(result.token);
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
   };
 
   const lock = () => {
@@ -449,6 +496,7 @@ function LinksPage() {
                 <Skeleton key={i} className="h-32 rounded-2xl" />
               ))}
             </div>
+<<<<<<< HEAD
           ) : loadError ? (
             <GlassCard className="p-8 text-center">
               <Link2 className="mx-auto h-6 w-6 text-primary" aria-hidden />
@@ -457,6 +505,8 @@ function LinksPage() {
                 Retry
               </Button>
             </GlassCard>
+=======
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
           ) : visible.length === 0 ? (
             <GlassCard className="p-8 text-center">
               <Link2 className="mx-auto h-6 w-6 text-primary" aria-hidden />

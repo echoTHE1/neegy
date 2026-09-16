@@ -72,6 +72,7 @@ function CreateScreen() {
       });
       notify.success("Room created", `${result.room.name} is live`);
       void navigate({ to: "/room/$roomId", params: { roomId: result.room.id } });
+<<<<<<< HEAD
     } catch (error) {
       console.error("[NEEGY] CREATE ROOM failed:", error);
       setError(
@@ -81,6 +82,10 @@ function CreateScreen() {
         "ROOM SERVER UNAVAILABLE",
         "Check the Supabase server configuration and deployment.",
       );
+=======
+    } catch {
+      setError("We couldn't reach the server. Check your connection and try again.");
+>>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
     } finally {
       setLoading(false);
     }
