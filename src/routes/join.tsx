@@ -63,7 +63,6 @@ export function JoinScreen({ presetCode }: { presetCode?: string }) {
       });
       notify.success("Access granted", `Welcome to ${result.room.name}`);
       void navigate({ to: "/room/$roomId", params: { roomId: result.room.id } });
-<<<<<<< HEAD
     } catch (error) {
       console.error("[NEEGY] JOIN ROOM failed:", error);
       setError(
@@ -73,10 +72,6 @@ export function JoinScreen({ presetCode }: { presetCode?: string }) {
         "ROOM SERVER UNAVAILABLE",
         "Check the Supabase server configuration and deployment.",
       );
-=======
-    } catch {
-      setError("We couldn't reach the server. Check your connection and try again.");
->>>>>>> f675e0f6ffc6831c33824b1faa7fc639a9c8908a
     } finally {
       setLoading(false);
     }
