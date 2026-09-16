@@ -234,12 +234,14 @@ function Room({ session }: { session: SessionDTO }) {
 
         <div className="flex items-center gap-1.5">
           <Button
-            variant="icon"
-            size="icon"
+            variant="outline"
+            size="sm"
             aria-label="Invite code"
+            className="gap-1.5 font-mono tracking-[0.18em]"
             onClick={() => setShowInvite(true)}
           >
             <KeyRound className="h-4 w-4" />
+            <span className="hidden sm:inline">{room.code}</span>
           </Button>
           <Button
             variant="icon"
